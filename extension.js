@@ -76,7 +76,7 @@ function activate(context) {
 
 		switch (languageId) {
 			case 'html':
-				outputFile = getOutputFilePath(parentPath, fileName, '.html', enableSeparateFolderHTML);
+				outputFile = getOutputFilePath(parentPath, fileName, '.big.html', enableSeparateFolderHTML);
 
 				let minifiedHTML = await minifyHTMLContent(inputFile);
 
@@ -90,7 +90,7 @@ function activate(context) {
 				break;
 
 			case 'javascript':
-				outputFile = getOutputFilePath(parentPath, fileName, '.js', enableSeparateFolderJS);
+				outputFile = getOutputFilePath(parentPath, fileName, '.big.js', enableSeparateFolderJS);
 
 				let minifiedJS = await minifyJSContent(inputFile);
 
@@ -104,7 +104,7 @@ function activate(context) {
 				break;
 
 			case 'css':
-				outputFile = getOutputFilePath(parentPath, fileName, '.css', enableSeparateFolderCSS);
+				outputFile = getOutputFilePath(parentPath, fileName, '.big.css', enableSeparateFolderCSS);
 
 				let minifiedCSS = await minifyCSSContent(inputFile);
 
@@ -213,7 +213,7 @@ function activate(context) {
 	}
 	
 	function shouldSkipMinification(fileName) {
-		const hasMinName = fileName.includes('.min.html') || fileName.includes('.min.js') || fileName.includes('.min.css'),
+		const hasMinName = !(fileName.includes('.big.html') || fileName.includes('.big.js') || fileName.includes('.big.css')),
 			split = fileName.split("\\");
 		
 		// if "onlyMinUnderSubFolder" empty, just respond with hasMinName (original check), otherwise 
@@ -221,16 +221,14 @@ function activate(context) {
 	}
 
 	function getOutputFilePath(parentPath, fileName, extension, enableSeparateFolder) {
-		const baseName = path.parse(fileName).name;
-
-		if (enableSeparateFolder) {
+		if (enableSeparateFolder) { // this is unneded but ok
 			const minFolder = path.join(parentPath, 'min');
 			if (!fs.existsSync(minFolder)) {
 				fs.mkdirSync(minFolder);
 			}
-			return path.join(minFolder, `${baseName}.min${extension}`);
+			return path.join(minFolder, fileName.replace(".big", ""));
 		} else {
-			return path.join(parentPath, `${baseName}.min${extension}`);
+			return path.join(parentPath, fileName.replace(".big", ""));
 		}
 	}
 }

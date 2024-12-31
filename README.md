@@ -1,6 +1,7 @@
 # Auto Minify Extension for VSCode
 
-Automatically minify your HTML, CSS, and JS files to optimize space and bandwidth usage.
+Automatically minify your HTML, CSS, and JS files to optimize space and bandwidth usage.<br>
+Ignore stuff below, this turns x.big.y to x.y instead of x.y to x.min.y
 
 ## Features
 
